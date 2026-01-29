@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>VR-Racer Dashboard</title>
+  <link rel="stylesheet" href="../static/css/dashboard.css">
+  <script defer src="../static/js/dashboard.js"></script>
+</head>
+<body>
+
+  <!-- 🎮 HEADER -->
+  <header class="dashboard-header">
+    <div class="logo-section">
+      <img src="../static/media/logo.png" alt="VR-Racer Logo" class="logo">
+      <h1>VR-Racer Dashboard</h1>
+    </div>
+    <nav class="nav-links">
+      <a href="/">🏠 Startseite</a>
+      <a href="#leaderboard">🏁 Rangliste</a>
+      <a href="#streams">📡 Live Streams</a>
+      <a href="#stats">📊 Statistiken</a>
+    </nav>
+  </header>
+
+  <!-- 🎖️ LEADERBOARD -->
+  <section id="leaderboard" class="card">
+    <h2>🏁 Aktuelle Bestzeiten</h2>
+    <table class="leaderboard-table">
+      <thead>
+        <tr>
+          <th>Platz</th>
+          <th>Fahrer</th>
+          <th>Runde</th>
+          <th>Zeit</th>
+          <th>Fahrzeug</th>
+        </tr>
+      </thead>
+      <tbody id="leaderboard-body">
+        <!-- Dynamisch durch JS -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 📡 STREAMS -->
+  <section id="streams" class="card">
+    <h2>📡 Live Streams</h2>
+    <div class="stream-grid">
+      <div class="stream-card">
+        <video src="../static/media/vr_race_loop.mp4" autoplay muted loop></video>
+        <div class="stream-info">
+          <h3>Noah Müller</h3>
+          <p>Neon City Sprint – Platz 1</p>
+        </div>
+      </div>
+      <div class="stream-card">
+        <video src="../static/media/vr_race_loop.mp4" autoplay muted loop></video>
+        <div class="stream-info">
+          <h3>Lara Fischer</h3>
+          <p>Pro-League Cup – Platz 2</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 📊 STATISTIKEN -->
+  <section id="stats" class="card">
+    <h2>📊 Globale Rennstatistik</h2>
+    <div class="stats-grid">
+      <div class="stat-box">
+        <h3>🚗 312</h3>
+        <p>aktive Fahrer</p>
+      </div>
+      <div class="stat-box">
+        <h3>🏎️ 97</h3>
+        <p>laufende Sessions</p>
+      </div>
+      <div class="stat-box">
+        <h3>🌍 6</h3>
+        <p>Server weltweit</p>
+      </div>
+      <div class="stat-box">
+        <h3>⚡ 29 ms</h3>
+        <p>Durchschnitts-Ping</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⚙️ FOOTER -->
+  <footer class="dashboard-footer">
+    <p>© 2025 VR-Racer Technologies · Powered by Raspberry Pi 5</p>
+    <div>
+      <a href="/">Zurück zur Hauptseite</a> |
+      <a href="/agb">AGB</a> |
+      <a href="https://www.sbs-herzogenaurach.de/impressum" target="_blank">Impressum</a>
+    </div>
+  </footer>
+
+</body>
+</html>

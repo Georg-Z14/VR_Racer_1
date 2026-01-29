@@ -1,0 +1,775 @@
+:root {
+  --primary: #00e0ff;
+  --secondary: #ff007a;
+  --bg-card: rgba(26, 26, 26, 0.7);
+  --text-light: #e0e0e0;
+  --gradient: linear-gradient(135deg, #00e0ff, #ff007a);
+}
+
+/* ======================================================
+   GRUNDLAYOUT
+====================================================== */
+/* 🔥 Hintergrundvideo nur im Login-Bereich */
+#login-bg-video {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+  opacity: 0.5;
+  transition: opacity 0.8s ease;
+}
+
+/* Wenn Stream aktiv ist → kein Video */
+body:not(.login-active) #login-bg-video {
+  display: none;
+}
+
+/* Gitter-Hintergrund deaktivieren im Login */
+body.login-active::before {
+  display: none !important;
+}
+
+body {
+  font-family: "Segoe UI", Roboto, sans-serif;
+  background: #000;
+  color: var(--text-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2vh 2vw;
+  overflow-x: hidden;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    0deg, rgba(0,224,255,0.1) 0, rgba(0,224,255,0.1) 2px, transparent 2px, transparent 50px
+  ),
+  repeating-linear-gradient(
+    90deg, rgba(0,224,255,0.1) 0, rgba(0,224,255,0.1) 2px, transparent 2px, transparent 50px
+  );
+  animation: moveGrid 20s linear infinite;
+  z-index: -1;
+}
+@keyframes moveGrid { to { transform: translate(-100px, -100px); } }
+
+/* ======================================================
+   HEADER
+====================================================== */
+header {
+  text-align: center;
+  margin-bottom: 2vh;
+}
+.logo {
+  width: clamp(80px, 15vw, 140px);
+  height: clamp(80px, 15vw, 140px);
+  border-radius: 50%;
+  border: 3px solid var(--primary);
+  box-shadow: 0 0 25px rgba(0,224,255,0.8);
+  animation: pulse 3s infinite alternate;
+}
+@keyframes pulse { from { transform: scale(1); } to { transform: scale(1.08); } }
+
+h1 {
+  font-size: clamp(2em, 5vw, 3em);
+  font-weight: 700;
+  color: var(--primary);
+  text-shadow: 0 0 25px rgba(0,224,255,0.8);
+}
+
+/* ======================================================
+   LOGIN / REGISTER
+====================================================== */
+#login-card, #register-card {
+  background: linear-gradient(135deg, rgba(0,224,255,0.15), rgba(255,0,122,0.15));
+  border-radius: 25px;
+  padding: clamp(40px, 6vw, 80px);
+  box-shadow: 0 0 45px rgba(0,224,255,0.3);
+  text-align: center;
+  width: min(95%, 650px);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  animation: fadeInUp 1s ease forwards;
+}
+#login-card.success, #register-card.success {
+  animation: successFlash 0.5s ease;
+  box-shadow: 0 0 45px rgba(0,255,128,0.6);
+}
+#login-card.error, #register-card.error {
+  animation: errorShake 0.5s ease;
+  box-shadow: 0 0 45px rgba(255,0,0,0.6);
+}
+@keyframes successFlash {
+  0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); }
+}
+@keyframes errorShake {
+  0%,100%{transform:translateX(0);}
+  25%{transform:translateX(-10px);}
+  50%{transform:translateX(10px);}
+  75%{transform:translateX(-6px);}
+}
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(60px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Eingabefelder */
+.password-wrapper, .register-password-wrapper {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  max-width: 420px;
+  margin: 0 auto 25px auto;
+  width: 100%;
+}
+#username, #password, #new-username, #new-password {
+  flex: 1;
+  height: clamp(45px, 5vh, 55px);
+  border-radius: 10px;
+  border: 2px solid var(--primary);
+  background: #111;
+  color: var(--text-light);
+  font-size: clamp(1em, 2vw, 1.1em);
+  padding: 0 14px;
+  outline: none;
+}
+#toggle-password, #toggle-new-password {
+  height: clamp(45px, 5vh, 55px);
+  width: clamp(45px, 5vh, 55px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 2px solid var(--primary);
+  background: #1a1a1a;
+  color: var(--text-light);
+  cursor: pointer;
+  font-size: clamp(1.2em, 2.5vw, 1.4em);
+  position: relative;
+  top: -5px;
+}
+
+/* Buttons */
+#login-card button, #register-card button {
+  background: var(--gradient);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-size: 0.9em;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 10px;
+  box-shadow: 0 0 15px rgba(0,224,255,0.25);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  width: fit-content;
+  align-self: center;
+}
+#login-card button:hover, #register-card button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px var(--secondary);
+}
+#login-status, #register-status {
+  margin-top: 12px;
+  font-weight: bold;
+  color: var(--secondary);
+  font-size: clamp(0.9em, 1.6vw, 1.1em);
+}
+
+/* ======================================================
+   STREAM / OVERLAY
+====================================================== */
+#stream-card {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  display: none;
+}
+video {
+  width: 100%;
+  border-radius: 14px;
+  border: 3px solid var(--primary);
+  background: #000;
+  box-shadow: 0 0 25px rgba(0,224,255,0.7);
+}
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  height: 40px;
+  position: relative;
+}
+.hud {
+  font-size: 1em;
+  color: var(--primary);
+  font-weight: bold;
+  text-shadow: 0 0 10px var(--primary);
+}
+
+/* Buttons unter dem Stream — auf gleicher Höhe wie 'Verbunden' */
+.control-overlay {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+}
+.overlay-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  background: rgba(20,20,20,0.7);
+  color: var(--text-light);
+  font-size: 1.1em;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0,224,255,0.3);
+  transition: all 0.2s ease;
+}
+.overlay-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px var(--secondary);
+}
+/* Abmelde-Button (Logout) */
+#logout-btn {
+  background: linear-gradient(135deg, #ff0040, #ff00aa);
+  border: 2px solid #ff007a;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  color: #fff;
+  font-size: 1.2em;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(255,0,100,0.5);
+  transition: all 0.25s ease;
+}
+#logout-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 30px #ff007a;
+}
+
+/* ======================================================
+   ADMIN PANEL POPUP
+====================================================== */
+#admin-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  backdrop-filter: blur(6px);
+}
+#admin-popup {
+  background: linear-gradient(145deg, rgba(0,224,255,0.1), rgba(255,0,122,0.1));
+  border: 2px solid var(--primary);
+  border-radius: 22px;
+  box-shadow: 0 0 45px rgba(0,224,255,0.6);
+  width: min(95%, 720px);
+  padding: 40px 50px;
+  text-align: center;
+}
+#admin-popup h2 {
+  color: var(--primary);
+  font-size: 1.8em;
+  text-shadow: 0 0 20px var(--primary);
+  margin-bottom: 10px;
+}
+#admin-popup p {
+  color: var(--text-light);
+  opacity: 0.85;
+  margin-bottom: 20px;
+}
+#admin-list {
+  background: rgba(20,20,20,0.65);
+  border-radius: 12px;
+  padding: 12px;
+  max-height: 320px;
+  overflow-y: auto;
+  box-shadow: inset 0 0 25px rgba(0,224,255,0.25);
+}
+
+/* Benutzerzeile + Buttons */
+.user-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(0,255,255,0.1);
+}
+.user-row input {
+  flex: 1;
+  max-width: 45%;
+  text-align: center;
+  height: 38px;
+  background: rgba(0,10,20,0.9);
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+  color: var(--text-light);
+  font-weight: 600;
+  box-shadow: inset 0 0 10px rgba(0,224,255,0.3);
+  transition: 0.2s;
+}
+.user-row input:focus {
+  box-shadow: 0 0 15px var(--primary);
+  outline: none;
+}
+.admin-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.save-btn {
+  background: linear-gradient(135deg, #00ffb3, #00cfff);
+  border: none;
+  border-radius: 8px;
+  width: 42px;
+  height: 38px;
+  font-size: 1.1em;
+  color: #000;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0,255,180,0.4);
+  transition: all 0.2s ease;
+}
+.save-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 18px #00ffb3;
+}
+.delete-btn {
+  background: linear-gradient(135deg, #ff0055, #ff00aa);
+  border: none;
+  border-radius: 8px;
+  width: 42px;
+  height: 38px;
+  font-size: 1.1em;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(255,0,100,0.4);
+  transition: all 0.2s ease;
+}
+.delete-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 18px #ff0040;
+}
+.admin-badge {
+  font-size: 1.3em;
+  margin-left: 5px;
+  text-shadow: 0 0 10px gold;
+}
+
+/* ======================================================
+   FOOTER
+====================================================== */
+footer {
+  margin-top: 25px;
+  font-size: 0.9em;
+  color: #888;
+  text-align: center;
+}
+
+/* ======================================================
+   ADMIN-BUTTONS – NEON-STIL + ZENTRIERTE ICONS
+====================================================== */
+
+/* ✅ Aktualisieren (blauer Neon) */
+.admin-actions button:first-child {
+  background: linear-gradient(135deg, #00e0ff, #00ffa3);
+  border: 2px solid var(--primary);
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-weight: 600;
+  font-size: 0.95em;
+  color: #fff;
+  text-shadow: 0 0 8px rgba(0,224,255,0.8);
+  cursor: pointer;
+  box-shadow:
+    0 0 15px rgba(0,224,255,0.4),
+    inset 0 0 10px rgba(0,224,255,0.3);
+  transition: all 0.25s ease-in-out;
+}
+.admin-actions button:first-child:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 0 30px rgba(0,224,255,0.9),
+    0 0 40px rgba(0,255,200,0.4);
+  background: linear-gradient(135deg, #00ffa3, #00e0ff);
+}
+
+/* ❌ Schließen (rötlicher Neon-Look) */
+.admin-actions button:last-child {
+  background: linear-gradient(135deg, #ff007a, #ff2d55);
+  border: 2px solid #ff007a;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-weight: 600;
+  font-size: 0.95em;
+  color: #fff;
+  text-shadow: 0 0 8px rgba(255,0,100,0.8);
+  cursor: pointer;
+  box-shadow:
+    0 0 15px rgba(255,0,100,0.4),
+    inset 0 0 10px rgba(255,0,100,0.25);
+  transition: all 0.25s ease-in-out;
+}
+.admin-actions button:last-child:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 0 30px rgba(255,0,120,0.9),
+    0 0 40px rgba(255,60,160,0.4);
+  background: linear-gradient(135deg, #ff2d55, #ff007a);
+}
+
+/* 💾 SPEICHERN – gleiches Design + mittig zentriert */
+.save-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #00ffc6, #00baff);
+  border: none;
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  font-size: 1.1em;
+  color: #000;
+  cursor: pointer;
+  box-shadow:
+    0 0 10px rgba(0,255,200,0.4),
+    inset 0 0 8px rgba(0,255,255,0.3);
+  text-shadow: 0 0 8px rgba(0,255,255,0.8);
+  transition: all 0.25s ease-in-out;
+}
+.save-btn:hover {
+  transform: scale(1.1);
+  box-shadow:
+    0 0 20px rgba(0,255,255,0.8),
+    0 0 25px rgba(0,255,200,0.6);
+}
+
+/* 🗑️ LÖSCHEN – identisch zentriert */
+.delete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ff0040, #ff00aa);
+  border: none;
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  font-size: 1.1em;
+  color: #fff;
+  cursor: pointer;
+  box-shadow:
+    0 0 10px rgba(255,0,100,0.4),
+    inset 0 0 8px rgba(255,0,100,0.3);
+  transition: all 0.25s ease-in-out;
+}
+.delete-btn:hover {
+  transform: scale(1.1);
+  box-shadow:
+    0 0 20px rgba(255,0,100,0.8),
+    0 0 25px rgba(255,50,200,0.6);
+}
+
+/* ======================================================
+   STEUER-BUTTONS – auf gleicher Höhe wie "Verbunden"
+====================================================== */
+.status-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  height: 48px;
+}
+
+/* Buttons (VR Ansicht, Werkzeug, Admin) */
+.control-overlay {
+  position: absolute;
+  top: 50%; /* exakt mittig zur Status-Bar */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Neon-Stil wie gehabt */
+.overlay-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  background: rgba(20, 20, 20, 0.75);
+  color: var(--text-light);
+  font-size: 1.2em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px rgba(0, 224, 255, 0.6);
+  transition: all 0.25s ease;
+}
+
+.overlay-btn:hover {
+  transform: translateY(-2px) scale(1.1);
+  box-shadow:
+    0 0 25px var(--secondary),
+    0 0 40px rgba(255, 0, 150, 0.3);
+}
+
+/* ---------- 🎬 Login Hintergrundvideo ---------- */
+#login-bg-video {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+  opacity: 0.35;
+  filter: blur(6px) saturate(1.2) brightness(0.8);
+  transition: opacity 0.6s ease;
+}
+
+/* Wenn man Stream oder Register anzeigt → Video ausblenden */
+#register-card[style*="display: block"],
+#stream-card[style*="display: block"] ~ #login-bg-video {
+  opacity: 0;
+}
+
+#vr-sbs-wrap video {
+  backface-visibility: hidden;
+  will-change: transform;
+}
+/* ======================================================
+   🚀 ULTRA-MODERNER FOOTER – VR RACER
+====================================================== */
+.footer-modern {
+  width: 100%;
+  background: radial-gradient(circle at 50% 0%, rgba(0,224,255,0.12) 0%, rgba(0,0,0,1) 80%);
+  border-top: 1px solid rgba(0,224,255,0.2);
+  color: #ccc;
+  padding: 70px 6vw 40px;
+  margin-top: 90px;
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-modern::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  left: -30%;
+  width: 160%;
+  height: 160%;
+  background: radial-gradient(circle at center, rgba(0,224,255,0.08) 0%, transparent 80%);
+  animation: footerPulse 10s infinite linear;
+  z-index: 0;
+  opacity: 0.6;
+}
+@keyframes footerPulse {
+  0% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.05) rotate(180deg); }
+  100% { transform: scale(1) rotate(360deg); }
+}
+
+/* GRID */
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 40px;
+  position: relative;
+  z-index: 1;
+}
+
+/* BRAND */
+.footer-brand {
+  max-width: 320px;
+}
+.footer-logo {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 25px rgba(0,224,255,0.6);
+  margin-bottom: 15px;
+  transition: transform 0.4s ease;
+}
+.footer-logo:hover {
+  transform: rotate(10deg) scale(1.05);
+}
+.footer-brand h3 {
+  color: var(--primary);
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  text-shadow: 0 0 12px rgba(0,224,255,0.6);
+}
+.footer-brand p {
+  font-size: 0.95rem;
+  color: #aaa;
+  line-height: 1.5;
+}
+.footer-cta {
+  display: inline-block;
+  margin-top: 12px;
+  color: var(--secondary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.footer-cta:hover {
+  color: var(--primary);
+  text-shadow: 0 0 8px var(--primary);
+}
+
+/* LINKS */
+.footer-links h4 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.footer-links a {
+  display: block;
+  color: #bbb;
+  text-decoration: none;
+  margin: 5px 0;
+  transition: color 0.3s ease;
+}
+.footer-links a:hover {
+  color: var(--primary);
+  text-shadow: 0 0 6px var(--primary);
+}
+
+/* SOCIAL */
+.footer-social .icons {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+.footer-social a {
+  font-size: 1.5rem;
+  color: var(--primary);
+  text-decoration: none;
+  transition: transform 0.3s, text-shadow 0.3s;
+}
+.footer-social a:hover {
+  transform: scale(1.3);
+  text-shadow: 0 0 18px var(--secondary);
+}
+.footer-social-text {
+  color: #888;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* BOTTOM */
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  margin-top: 50px;
+  padding-top: 18px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #888;
+  position: relative;
+  z-index: 1;
+}
+.footer-legal {
+  margin-top: 6px;
+}
+.footer-legal a {
+  color: #777;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.footer-legal a:hover {
+  color: var(--primary);
+}
+
+/* ======================================================
+   ✨ FOOTER – NEON GLOW + ANIMIERTE LINIE
+====================================================== */
+.footer-modern {
+  position: relative;
+  background: radial-gradient(circle at 20% 20%, rgba(0, 224, 255, 0.1), rgba(0, 0, 0, 0.95));
+  padding: 60px 8vw 40px;
+  color: #ccc;
+  border-top: 2px solid rgba(0, 224, 255, 0.3);
+  box-shadow: 0 -2px 25px rgba(0, 224, 255, 0.25);
+  overflow: hidden;
+}
+
+.footer-glow-line {
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 200%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
+  animation: moveGlow 6s linear infinite;
+  filter: blur(2px);
+}
+@keyframes moveGlow {
+  0% { transform: translateX(0); opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { transform: translateX(-50%); opacity: 0.7; }
+}
+
+/* ✅ Neon Hover Effekt */
+.footer-links a:hover {
+  color: #fff;
+  text-shadow: 0 0 10px var(--primary), 0 0 20px var(--secondary);
+}
+
+/* ✅ Ranking- und Eventlisten */
+.ranking-list li, .event-list li {
+  color: #aaa;
+  margin-left: 10px;
+  line-height: 1.5em;
+  transition: color 0.3s ease;
+}
+.ranking-list li:hover, .event-list li:hover {
+  color: var(--primary);
+  text-shadow: 0 0 6px var(--secondary);
+}
+
+/* ✅ Footer-Unterbereich */
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 15px;
+  text-align: center;
+  font-size: 0.85em;
+  color: #888;
+  background: rgba(10, 10, 10, 0.4);
+  backdrop-filter: blur(6px);
+}
+.footer-legal a {
+  color: #999;
+  text-decoration: none;
+  margin: 0 4px;
+}
+.footer-legal a:hover {
+  color: var(--primary);
+  text-shadow: 0 0 6px var(--secondary);
+}

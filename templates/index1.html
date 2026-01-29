@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>VR-Racer Live</title>
+  <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body class="login-active" onload="if(localStorage.getItem('jwt_token') && Date.now() < parseInt(localStorage.getItem('jwt_expiry') || 0)) {
+        document.getElementById('login-bg-video')?.remove();
+        document.body.classList.remove('login-active');
+      }">  <!-- Start im Login-Zustand -->
+
+<!-- 🔥 Hintergrundvideo nur im Loginbereich -->
+<video id="login-bg-video" autoplay muted loop playsinline>
+  <source src="../static/media/vr_race_loop.mp4" type="video/mp4">
+</video>
+
+
+<header>
+  <img src="../static/media/logo.png" alt="VR-Racer Logo" class="logo">
+  <h1>🚗 VR-Racer Live</h1>
+</header>
+
+<!-- LOGIN -->
+<div id="login-card" class="card">
+  <h2>🔑 Login</h2>
+  <div class="password-wrapper">
+    <input type="text" id="username" placeholder="Benutzername" required>
+  </div>
+  <div class="password-wrapper">
+    <input type="password" id="password" placeholder="Passwort eingeben" required>
+    <button type="button" id="toggle-password">👁️</button>
+  </div>
+  <button onclick="login()">Anmelden</button>
+  <p id="login-status"></p>
+  <p class="switch-text">Noch kein Konto? <a href="#" class="switch-link" onclick="switchToRegister()">Registrieren</a></p>
+</div>
+
+<!-- REGISTRIERUNG -->
+<div id="register-card" class="card" style="display:none;">
+  <h2>🆕 Konto anlegen</h2>
+  <div class="password-wrapper">
+    <input type="text" id="new-username" placeholder="Benutzername" required>
+  </div>
+  <div class="register-password-wrapper">
+    <input type="password" id="new-password" placeholder="Passwort erstellen" required>
+    <button type="button" id="toggle-new-password">👁️</button>
+  </div>
+  <button onclick="registerUser()">Registrieren</button>
+  <p id="register-status"></p>
+  <p class="switch-text">Schon ein Konto? <a href="#" class="switch-link" onclick="switchToLogin()">Zurück zum Login</a></p>
+</div>
+
+<!-- STREAM -->
+<div id="stream-card" class="card" style="display:none;">
+  <video id="video" autoplay playsinline ondblclick="toggleFullscreen()"></video>
+  <div class="status-bar">
+    <p id="status">🔄 Verbinde...</p>
+    <div class="hud">📡 -- ms | 🎥 -- FPS</div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin-overlay">
+  <div id="admin-popup">
+    <h2>👑 Benutzerverwaltung</h2>
+    <p>Hier kannst du Benutzer anzeigen und löschen.</p>
+    <div id="admin-list"><p>⏳ Lade Benutzer...</p></div>
+    <div class="admin-actions">
+      <button onclick="loadAdminPanel()">🔄 Aktualisieren</button>
+      <button onclick="closeAdminPanel()">❌ Schließen</button>
+    </div>
+  </div>
+</div>
+
+<!-- FEEDBACK -->
+<div id="ui-feedback" class="ui-feedback"></div>
+
+<footer>
+  <p>Made for <strong>VR-Cars</strong> | Powered by VR-Racer 🚀</p>
+</footer>
+
+<script src="../static/js/client1.js"></script>
+</body>
+</html>
+
+<footer class="footer-modern">
+  <div class="footer-glow-line"></div>
+
+  <div class="footer-grid">
+    <!-- BRAND -->
+    <div class="footer-brand">
+      <img src="../static/media/logo.png" alt="VR-Racer Logo" class="footer-logo">
+      <h3>VR-Racer Live</h3>
+      <p>
+        Erlebe die Zukunft des Sim-Racing.<br>
+        Live gestreamt in Echtzeit-VR – entwickelt für Performance, Präzision und Adrenalin.<br>
+        Verbinde dich mit echten Strecken, realen Gegnern und fühl das Tempo.
+      </p>
+      <!-- 🚀 Kein Button hier -->
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="footer-links">
+      <h4>Navigation</h4>
+      <a href="/">🏠 Startseite</a>
+      <a href="/features">⚙️ Features</a>
+      <a href="/support">📞 Support</a>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="footer-links">
+      <h4>🏁 Dashboard</h4>
+      <p>Direkter Zugriff auf die Live-Statistiken und Bestenlisten.</p>
+      <a href="/dashboard" class="footer-cta">🚀 Jetzt öffnen</a>
+
+      <ul class="ranking-list">
+        <li>🥇 Noah Müller – 02:13</li>
+        <li>🥈 Lara Fischer – 02:16</li>
+        <li>🥉 Finn Reuter – 02:18</li>
+        <li>4️⃣ Jonas Wolf – 02:20</li>
+        <li>5️⃣ Alina Brandt – 02:22</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 <strong>VR-Racer Technologies</strong> · Powered by VR-Racer · Live Server: EU-West-01</p>
+    <div class="footer-legal">
+      <a href="https://www.sbs-herzogenaurach.de/impressum" target="_blank">Impressum</a> |
+      <a href="https://www.sbs-herzogenaurach.de/kontakt" target="_blank">Kontakt</a> |
+      <a href="https://www.sbs-herzogenaurach.de/datenschutz" target="_blank">Datenschutz</a> |
+      <a href="/agb">AGB</a>
+    </div>
+  </div>
+</footer>
